@@ -2,6 +2,9 @@
 
 import dotenv from 'dotenv'  //to write this import syntax, experimental feature is used.Check json file/ scripts/ dev
 import connectDB from './db/index.js';
+import express from 'express';
+
+const app = express();
 
 dotenv.config(
   {
@@ -10,6 +13,18 @@ dotenv.config(
 )
 
 connectDB()
+.then(() => {
+  app.listen(process.env.PORT || 8000, () => {
+    console.log(`app is successfully listening on port: ${process.env.PORT}`)
+  })
+
+  app.on("error", (err) => {
+    console.log('MONGODB connection failed!!', err)
+  })
+})
+.catch((err) => {
+  console.log('MONGODB connection failed!!', err)
+})
 
 
 

@@ -2,9 +2,7 @@
 
 import dotenv from 'dotenv'  //to write this import syntax, experimental feature is used.Check json file/ scripts/ dev
 import connectDB from './db/index.js';
-import express from 'express';
-
-const app = express();
+import {app} from './app.js';
 
 dotenv.config(
   {

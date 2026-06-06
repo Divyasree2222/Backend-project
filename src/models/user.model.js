@@ -49,11 +49,12 @@ const userSchema = new Schema(
   }, {timestamps: true}
 )
 
-userSchema.pre("save", async function(next){     //no this in arrow functions
-  if(! this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 10)     //10 is the no.of rounds
-  next()    
+userSchema.pre("save", async function(/* next */){     //no this in arrow functions
+  if(! this.isModified("password")) return ;
+  this.password = await bcrypt.hash(this.password, 10)     //10 is the no.of rounds    
 })
+//in modern mongoose next is not passed, for a promise it handles the flow itself
+//no need of next
 
 userSchema.methods.isPasswordCorrect = async function(password){
   return await bcrypt.compare(password, this.password)

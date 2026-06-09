@@ -1,9 +1,11 @@
-import { ApiError } from "../utility/ApiError"
+import { ApiError } from "../utility/ApiError.js"
 import jwt from "jsonwebtoken"
 import {User} from "../models/user.model.js"
+import { asyncHandler } from "../utility/asyncHandler.js"
 
-const verifyJWT = asyncHandler((req, res, next) => {
+const verifyJWT = asyncHandler(async(req, res, next) => {
   const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
+  //mobile apps or postman sends tokens as headers
 
   try{
     if(!token){

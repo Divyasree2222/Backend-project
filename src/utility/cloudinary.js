@@ -23,3 +23,29 @@ export const uploadOnCloudinary = async (localFilePath) => {
     throw error; 
   }
 }
+
+export const deleteFromCloudinary = async (fullUrl, resourceType = "image") => {
+    try {
+        if (!fullUrl) return null;
+
+        const parts = fullUrl.split('/upload/');
+        if (parts.length < 2) throw new Error("Invalid Cloudinary URL format");
+        
+        let publicIdWithExtension = parts[1];
+
+        if (publicIdWithExtension.startsWith('v')) {
+            publicIdWithExtension = publicIdWithExtension.split('/').slice(1).join('/');
+        }
+
+        const publicId = publicIdWithExtension.substring(0, publicIdWithExtension.lastIndexOf('.'));
+
+        const result = await cloudinary.uploader.destroy(publicId, {
+            resource_type: resourceType
+        });
+
+        return result;
+    } catch (error) {
+        console.error("Cloudinary deletion failed:", error);
+        return null;
+    }
+};
